@@ -1,4 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
+  const response = await axios.get(
+    'https://jsonplaceholder.typicode.com/todos'
+  );
+  return response.data;
+});
 
 const getInitialTodo = () => {
   // getting todo list from local storage
@@ -70,6 +78,9 @@ export const todoSlice = createSlice({
     updateFilterStatus: (state, action) => {
       state.filterStatus = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchTodos.fulfilled, (state, action) => action.payload);
   },
 });
 

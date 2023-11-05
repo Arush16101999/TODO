@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
-import { deleteTodo, updateTodo } from '../slices/todoSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteTodo, fetchTodos, updateTodo } from '../slices/todoSlice';
 import styles from '../styles/modules/todoItem.module.scss';
 import { getClasses } from '../utils/getClasses';
 import CheckButton from './CheckButton';
@@ -22,7 +22,7 @@ function TodoItem({ todo }) {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-
+  const todos = useSelector((state) => state.todo.todoList);
   useEffect(() => {
     if (todo.status === 'complete') {
       setChecked(true);
@@ -47,6 +47,10 @@ function TodoItem({ todo }) {
     setUpdateModalOpen(true);
   };
 
+  const fetchTodoList = () => {
+    dispatch(fetchTodos());
+  };
+
   return (
     <>
       <motion.div className={styles.item} variants={child}>
@@ -61,6 +65,11 @@ function TodoItem({ todo }) {
             >
               {todo.title}
             </p>
+            {/* <ul>
+              {todos.map((to) => (
+                <p key={to.id}>{to.title}</p>
+              ))}
+            </ul> */}
             <p className={styles.time}>
               {format(new Date(todo.time), 'p, MM/dd/yyyy')}
             </p>
