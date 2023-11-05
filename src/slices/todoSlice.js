@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const getInitialTodo = () => {
-  // getting todo list
+  // getting todo list from local storage
   const localTodoList = window.localStorage.getItem('todoList');
   // if todo list is not empty
   if (localTodoList) {
